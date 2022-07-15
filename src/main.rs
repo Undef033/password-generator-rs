@@ -45,8 +45,6 @@ fn main() -> Result<(), Error> {
     println!("[1] Uppercase [1/0]: ");
     let uppercase = get_inp::<i8>(1)?;
 
-    println!("{} {} {}", length, special_chars, uppercase);
-
     println!(
         "{}",
         generate_pwd(length, uppercase != 0, special_chars != 0)
