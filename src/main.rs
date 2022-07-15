@@ -24,15 +24,12 @@ fn generate_pwd(len: u8, uppercase: bool, special_chars: bool) -> String {
 
 fn get_inp<T>(default: T) -> Result<T, Error>
 where
-    T: std::str::FromStr + std::convert::TryInto<T>,
+    T: std::str::FromStr,
 {
     let mut line = String::new();
     std::io::stdin().read_line(&mut line)?;
 
-    match line.trim().parse::<T>() {
-        Ok(val) => Ok(val),
-        _ => Ok(default),
-    }
+    Ok(line.trim().parse::<T>().unwrap_or(default))
 }
 
 fn main() -> Result<(), Error> {
