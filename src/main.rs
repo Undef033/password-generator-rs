@@ -1,8 +1,7 @@
 use rand::prelude::*;
 
-fn generate_pwd(len: u8, uppercase: bool, special_chars: bool) -> String {
+pub fn generate(len: u8, uppercase: bool, special_chars: bool) -> String {
     let mut chars = "abcdefghijklmnopqrstuvwxyz".to_string();
-    let mut pwd = "".to_string();
     let mut rng = rand::thread_rng();
 
     if uppercase {
@@ -13,12 +12,15 @@ fn generate_pwd(len: u8, uppercase: bool, special_chars: bool) -> String {
         chars += "!#$%*+-/?@^_"
     }
 
-    for _ in 0..len {
-        let n = rng.gen_range(0..chars.len());
-        pwd += chars.get(n..n + 1).unwrap();
-    }
+    let pwd: Vec<String> = (0..len)
+        .into_iter()
+        .map(|_| {
+            let n = rng.gen_range(0..chars.len());
+            chars.get(n..n + 1).unwrap_or("").to_string()
+        })
+        .collect();
 
-    pwd
+    pwd.join("")
 }
 
 fn get_inp<T>(default: T) -> Result<T, std::io::Error>
@@ -52,7 +54,7 @@ fn main() -> Result<(), std::io::Error> {
     println!("[y] Uppercase [Y/n]: ");
     let uppercase = get_inp::<bool>(true)?;
 
-    println!("{}", generate_pwd(length, uppercase, special_chars));
+    println!("{}", generate(length, uppercase, special_chars));
 
     Ok(())
 }
