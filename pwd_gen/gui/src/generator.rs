@@ -33,8 +33,16 @@ pub struct Generator {
     pub clipboard: ClipboardContext,
 }
 
+impl eframe::App for crate::generator::Generator {
+    fn update(&mut self, ctx: &eframe::egui::Context, _frame: &mut eframe::Frame) {
+        ctx.set_visuals(eframe::egui::style::Visuals::dark());
+        self.update_ui(ctx);
+    }
+}
+
 impl Generator {
-    fn new(passwords: Vec<String>, cache_dir: std::path::PathBuf) -> Self {
+    fn new(passwords: Vec<String>, cache_dir: std::path::PathBuf, _cc: &eframe::CreationContext<'_>) -> Self {
+
         Self {
             passwords,
             calls: 0,
@@ -50,7 +58,7 @@ impl Generator {
     pub fn init() -> Result<(), std::io::Error> {
         let window_size = eframe::egui::Vec2::new(253.0, 430.0);
 
-        let win_options = eframe::NativeOptions {
+        let native_options = eframe::NativeOptions {
             initial_window_size: Some(window_size),
             ..Default::default()
         };
@@ -70,9 +78,11 @@ impl Generator {
             Err(_) => Vec::default(),
         };
 
-        eframe::run_native(Box::new(Generator::new(passwords, cache_dir)), win_options);
-
-        Ok(())
+        eframe::run_native(
+            "Password Generator",
+            native_options,
+            Box::new(|cc| Box::new(Generator::new(passwords, cache_dir, cc))),
+        )
     }
 
     fn generate(&mut self) {
@@ -129,16 +139,15 @@ impl Generator {
         if !skip_calls_check {
             self.calls = 0
         }
-
     }
 
-    pub fn update_ui(&mut self, ctx: &eframe::egui::CtxRef) {
+    pub fn update_ui(&mut self, ctx: &eframe::egui::Context) {
         self.update_passwords(false);
         self.update_chars();
 
         eframe::egui::CentralPanel::default().show(ctx, |ui| {
             if !self.passwords.is_empty() {
-                eframe::egui::ScrollArea::auto_sized().show(ui, |ui| {
+                eframe::egui::ScrollArea::new([false, true]).show(ui, |ui| {
                     for pwd in self.passwords.clone().into_iter().rev() {
                         ui.label(&pwd);
 
@@ -185,7 +194,7 @@ impl Generator {
                         eframe::egui::TextEdit::multiline(&mut self.length.to_string())
                             .desired_width(16.0)
                             .desired_rows(1)
-                            .enabled(false),
+                            .interactive(false),
                     );
 
                     ui.add_space(1.0);

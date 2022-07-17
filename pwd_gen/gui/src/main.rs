@@ -1,7 +1,6 @@
 #![windows_subsystem = "windows"]
 
 mod generator;
-mod ui;
 
 fn main() -> Result<(), std::io::Error> {
     #[cfg(windows)]
