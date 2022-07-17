@@ -1,0 +1,15 @@
+[package]
+name = "pwd_gen"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[target.'cfg(windows)'.dependencies]
+winapi = {version = "*", features = ["wincon", "winuser"]}
+
+[dependencies]
+rand = "*"
+eframe = "0.14.0"
+clipboard = "*"
+magic-crypt = "*"
+dirs = "*"
