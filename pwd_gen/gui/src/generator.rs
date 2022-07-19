@@ -38,11 +38,10 @@ impl Generator {
 
     pub fn init() {
         let window_size = eframe::egui::Vec2::new(253.0, 430.0);
-        let min_window_size = window_size;
 
         let native_options = eframe::NativeOptions {
             initial_window_size: Some(window_size),
-            min_window_size: Some(min_window_size),
+            min_window_size: Some(window_size),
             ..Default::default()
         };
 
