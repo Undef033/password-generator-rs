@@ -5,10 +5,8 @@ mod settings;
 mod ui;
 mod utils;
 
-fn main() -> Result<(), std::io::Error> {
+fn main() {
     utils::hide_console();
 
-    generator::Generator::init()?;
-
-    Ok(())
+    generator::Generator::init();
 }
