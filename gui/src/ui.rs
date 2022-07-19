@@ -1,7 +1,7 @@
 use crate::generator;
 use crate::settings;
 use crate::utils;
-use clipboard::ClipboardProvider;
+use copypasta_ext::prelude::*;
 
 impl eframe::App for generator::Generator {
     fn update(&mut self, ctx: &eframe::egui::Context, _frame: &mut eframe::Frame) {
@@ -104,7 +104,9 @@ impl eframe::App for generator::Generator {
                     ui.label(&pwd);
 
                     if ui.button("Copy").clicked() {
-                        if let Ok(mut clipboard_ctx) = clipboard::ClipboardContext::new() {
+                        if let Ok(mut clipboard_ctx) =
+                            copypasta_ext::x11_fork::ClipboardContext::new()
+                        {
                             clipboard_ctx.set_contents(pwd.to_string()).unwrap_or(());
                         }
                     }

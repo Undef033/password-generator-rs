@@ -10,7 +10,7 @@ winapi = {version = "0.3.9", features = ["wincon", "winuser"]}
 [dependencies]
 rand = "0.8.5"
 eframe = "0.18.0"
-clipboard = "0.5.0"
+copypasta-ext = "0.3.9"
 magic-crypt = "3.1.10"
 dirs = "4.0.0"
 rusty_pool = "0.7.0"
